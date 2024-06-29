@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registeration System</title>
+    <!-- Fav Icon of Web App -->
+    <link rel="shortcut icon" href="./resources/student icon.png" type="image/x-icon">
+    <!-- External CSS Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+
+    <header class="container">
+        <img src="./resources/student icon.png" alt="Website Logo" class="logo">
+        <h1>Student Registeration System</h1>
+    </header>
+
+    <!-- Header Section -->
+
+    <!-- Main Section -->
+
+    <main class="container">
+        <!-- Student Registeration System Form -->
+        <form class="student-register-form" action="">
+            <div class="form-field">
+                <label for="student-name">Name</label>
+                <input type="text" id="student-name" name="student-name" minlength="3" required>
+            </div>
+
+            <div class="form-field">
+                <label for="student-class">Class</label>
+                <input type="text" id="student-class" name="student-class" minlength="2" required>
+            </div>
+
+            <div class="form-field">
+                <label for="student-roll">Roll No.</label>
+                <input type="text" id="student-roll" name="student-roll" minlength="2" required>
+            </div>
+
+            <div class="form-field">
+                <label for="student-email">Email ID</label>
+                <input type="email" id="student-email" name="student-email" required>
+            </div>
+
+            <div class="form-field">
+                <label for="contact-no">Contact No.</label>
+                <input type="tel" id="contact-no" name="contact-no" minlength="10" maxlength="10" required>
+            </div>
+
+            <article class="form-buttons">
+                <button class="btn submit-btn">Submit</button>
+                <input type="reset" class="btn reset-btn" value="Reset">
+            </article>
+        </form>
+
+        <!-- Table to display Student data -->
+        <section class="student-data-table-container">
+            <h2 class="student-data-table-container-heading">Student Data</h2>
+            <section class="student-table">
+                <table class="student-data-table">
+                    <thead>
+                        <tr class="heading-row">
+                            <th class="table-cell heading-row-cell">Student ID</th>
+                            <th class="table-cell heading-row-cell">Name</th>
+                            <th class="table-cell heading-row-cell">Class</th>
+                            <th class="table-cell heading-row-cell">Roll No.</th>
+                            <th class="table-cell heading-row-cell">Email ID</th>
+                            <th class="table-cell heading-row-cell contact-cell">Contact No.</th>
+                            <th class="table-cell heading-row-cell">Actions</th>
+                        </tr>
+                    </thead>
+                    <!-- Students Data List -->
+                    <tbody class="student-data-list">
+                        <!-- <tr class="student-data-row">
+                            <td class="table-cell">001</td>
+                            <td class="table-cell">Mayank M Jain</td>
+                            <td class="table-cell">BSc. IT</td>
+                            <td class="table-cell">09</td>
+                            <td class="table-cell">mmj04467@gmail.com</td>
+                            <td class="table-cell">7738694064</td>
+                            <td class="table-cell buttons">
+                                <button class="btn edit">Edit</button>
+                                <button class="btn remove">Remove</button>
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </section>
+        </section>
+    </main>
+
+    <!-- Main Section -->
+
+    <!-- Footer Section -->
+
+    <footer>
+        <p class="container">Made by Mayank M Jain. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Footer Section -->
+
+    <!-- External Script File -->
+    <script src="./app.js" defer></script>
+</body>
+</html>
