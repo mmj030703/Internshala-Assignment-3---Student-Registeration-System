@@ -95,7 +95,6 @@ main {
 }
 
 .student-table {
-    width: 100%;
     max-height: 500px;
     overflow-y: scroll;
     margin-top: 20px;
@@ -107,10 +106,6 @@ main .student-data-table {
     border-collapse: collapse;
 }
 
-.student-data-table .student-data-row {
-    display: flex;
-}
-
 .student-data-table .student-data-row .buttons .btn {
     padding: 5px 10px;
 }
@@ -119,19 +114,10 @@ main .student-data-table {
     border: 1px solid #fff;
 }
 
-.student-data-table .heading-row {
-    display: flex;
-}
-
 .table-cell {
-    width: 100%;
-    display: block;
-}
-
-.heading-row .table-cell,
-.student-data-row .table-cell {
+    width: 100px;
+    word-wrap: break-word;
     padding: 10px 0;
-    flex-grow: 1;
     text-align: center;
 }
 
