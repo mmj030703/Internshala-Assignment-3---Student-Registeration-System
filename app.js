@@ -11,6 +11,40 @@ const studentDataList = document.querySelector(".student-data-list");
 let studentIdCounter = 0;
 
 
+
+// function to create a popup element
+function createPopupElement(message) {
+    // Creating Elements 
+    const popupElement = document.createElement('div');
+    const popupMessage = document.createElement('p');
+
+    // Adding text to it
+    popupMessage.textContent = message;
+
+    // Adding classes to elements
+    popupElement.classList.add("popup");
+
+    // Appending elements
+    popupElement.appendChild(popupMessage);
+
+    return popupElement;
+}
+
+// function to popup a message
+function popupMessage(message) {
+    const popupElement = createPopupElement(message);
+
+    // Appending popup to the body
+    document.body.appendChild(popupElement);
+
+    /* Removing Popup after some time  */
+    setTimeout(() => {
+        popupElement.remove();
+    }, 3000);
+}
+
+
+
 // function to empty student input fields
 function emptyStudentInputValues() {
     studentName.value = "";
@@ -22,7 +56,51 @@ function emptyStudentInputValues() {
 
 // function to validate student data from input fields
 function validateStudentData(name, classValue, rollno, emailId, contactNo) {
-    
+    // Checking whether any field is empty or not 
+    switch ("") {
+        case name.trim():
+            popupMessage("Name field should not be empty!");
+            return false;
+        case classValue.trim():
+            popupMessage("Class field should not be empty!");
+            return false;
+        case rollno.trim():
+            popupMessage("Roll No field should not be empty!");
+            return false;
+        case emailId.trim():
+            popupMessage("Email Id field should not be empty!");
+            return false;
+        case contactNo.trim():
+            popupMessage("Contact No field should not be empty!");
+            return false;
+    }
+
+    // Validating separate fields
+    if (!(/^[A-Za-z\s]+$/.test(name))) {
+        popupMessage("Name field should only contain Alphabets!");
+        return false;
+    }
+    if (!(/^[A-Za-z.\s]+$/.test(classValue))) {
+        popupMessage("Class field should only contain Alphabets and Dot(.)!");
+        return false;
+    }
+    if (!(/^[0-9]+$/.test(rollno))) {
+        popupMessage("Roll No field should only contain Numbers!");
+        return false;
+    }
+    if (!/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/.test(emailId)) {
+        popupMessage("Enter an correct Email!");
+        return false;
+    }
+    if (!(/^[0-9]+$/.test(contactNo))) {
+        popupMessage("Contact No field should only contain Numbers!");
+        return false;
+    }
+    if (!(contactNo.length === 10)) {
+        popupMessage("Contact No field should have 10 digits!");
+        return false;
+    }
+
     return true;
 }
 
