@@ -160,7 +160,7 @@ footer p {
     padding: 10px;
     width: 280px;
     border-radius: 8px;
-    color: #ff0000;
+    /* color: #ff0000; */
     background-color: #fff;
     font-weight: bold;
     box-shadow: 1px 1px 4px #444;
