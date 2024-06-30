@@ -106,10 +106,6 @@ main .student-data-table {
     border-collapse: collapse;
 }
 
-.student-data-table .student-data-row .buttons .btn {
-    padding: 5px 10px;
-}
-
 .student-data-table, th, td {
     border: 1px solid #fff;
 }
@@ -121,8 +117,29 @@ main .student-data-table {
     text-align: center;
 }
 
+.table-cell input {
+    border: none;
+    text-align: center;
+    font-size: 1rem;
+    width: 190px;
+    outline: none;
+    padding: 5px 0px;
+    outline: 3px solid #14213D;
+}
+
+.table-cell input:focus {
+    outline: 3px solid #FCA311;
+}
+
+.student-data-list .student-data-row .buttons button {
+    background-color: transparent;
+    border: none;
+    margin-bottom: 7px;
+}
+
 main .student-data-list .table-cell .btn {
-    padding: 5px 7px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
 }
 
 /* Main Section */
@@ -160,7 +177,6 @@ footer p {
     padding: 10px;
     width: 280px;
     border-radius: 8px;
-    /* color: #ff0000; */
     background-color: #fff;
     font-weight: bold;
     box-shadow: 1px 1px 4px #444;

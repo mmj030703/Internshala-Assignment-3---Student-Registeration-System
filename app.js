@@ -112,12 +112,18 @@ function validateStudentData(name, classValue, rollno, emailId, contactNo) {
 function createStudentDataRow(name, classValue, rollno, emailId, contactNo) {
     // Creating Elements
     const studentDataRow = document.createElement('tr');
-    const studentNameCell = document.createElement('td');
     const studentIdCell = document.createElement('td');
+    const studentNameCell = document.createElement('td');
     const studentClassCell = document.createElement('td');
     const studentRollNoCell = document.createElement('td');
     const studentEmailIdCell = document.createElement('td');
     const studentContactNoCell = document.createElement('td');
+    const studentNameInput = document.createElement('input');
+    const studentClassInput = document.createElement('input');
+    const studentRollNoInput = document.createElement('input');
+    const studentEmailIdInput = document.createElement('input');
+    const studentContactNoInput = document.createElement('input');
+
     const studentButtonsCell = document.createElement('td');
     const editBtn = document.createElement("button");
     const removeBtn = document.createElement("button");
@@ -125,26 +131,41 @@ function createStudentDataRow(name, classValue, rollno, emailId, contactNo) {
     // Adding Classes to Elements
     studentDataRow.classList.add("student-data-row");
     studentNameCell.classList.add("table-cell");
-    studentIdCell.classList.add("table-cell");
+    studentIdCell.classList.add("table-cell", "student-id");
     studentClassCell.classList.add("table-cell");
     studentRollNoCell.classList.add("table-cell");
     studentEmailIdCell.classList.add("table-cell");
     studentContactNoCell.classList.add("table-cell");
-    studentButtonsCell.classList.add("table-cell");
-    editBtn.classList.add("btn", "edit");
-    removeBtn.classList.add("btn", "remove");
+    studentButtonsCell.classList.add("table-cell", "buttons");
+    studentNameInput.classList.add("student-name");
+    studentClassInput.classList.add("student-class");
+    studentRollNoInput.classList.add("student-rollno");
+    studentEmailIdInput.classList.add("student-emailid");
+    studentContactNoInput.classList.add("student-contactno");
 
     // Adding data to the Elements
-    studentNameCell.textContent = name;
+    studentNameInput.value = name;
     studentIdCell.textContent = studentIdCounter++;
-    studentClassCell.textContent = classValue;
-    studentRollNoCell.textContent = rollno;
-    studentEmailIdCell.textContent = emailId;
-    studentContactNoCell.textContent = contactNo;
-    editBtn.innerHTML = "<i class='fa-solid fa-pen-to-square'></i>";
-    removeBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+    studentClassInput.value = classValue;
+    studentRollNoInput.value = rollno;
+    studentEmailIdInput.value = emailId;
+    studentContactNoInput.value = contactNo;
+    editBtn.innerHTML = "<i title='Edit' class='btn edit fa-solid fa-pen-to-square'></i>";
+    removeBtn.innerHTML = '<i title="Remove" class="btn remove fa-solid fa-trash"></i>';
+
+    // Adding properties to input fields
+    studentNameInput.setAttribute('readonly', true);
+    studentClassInput.setAttribute('readonly', true);
+    studentRollNoInput.setAttribute('readonly', true);
+    studentEmailIdInput.setAttribute('readonly', true);
+    studentContactNoInput.setAttribute('readonly', true);
 
     // Appending the Elements - Creating the actual structure of the Student row
+    studentNameCell.appendChild(studentNameInput);
+    studentClassCell.appendChild(studentClassInput);
+    studentRollNoCell.appendChild(studentRollNoInput);
+    studentEmailIdCell.appendChild(studentEmailIdInput);
+    studentContactNoCell.appendChild(studentContactNoInput);
     studentButtonsCell.append(editBtn, removeBtn);
     studentDataRow.append(studentIdCell, studentNameCell, studentClassCell, studentRollNoCell, studentEmailIdCell, studentContactNoCell, studentButtonsCell);
     
@@ -174,4 +195,62 @@ function addStudentToList(e) {
 
 }
 
+function manipulateStudentDataRow(e) {
+    const target = e.target;
+
+    if (target.className === "btn edit fa-solid fa-pen-to-square") {
+        const parentElement = target.parentElement.parentElement.parentElement;
+
+        // Accessing input fields from parentElement
+        const nameInput = parentElement.querySelector('.student-name');
+        const classInput = parentElement.querySelector('.student-class');
+        const rollNoInput = parentElement.querySelector('.student-rollno');
+        const emailIdInput = parentElement.querySelector('.student-emailid');
+        const contactNoInput = parentElement.querySelector('.student-contactno');
+
+        nameInput.focus();
+
+        // Changing properties of input fields
+        nameInput.removeAttribute('readonly');
+        classInput.removeAttribute('readonly');
+        rollNoInput.removeAttribute('readonly');
+        emailIdInput.removeAttribute('readonly');
+        contactNoInput.removeAttribute('readonly');
+
+        target.className = "btn save fa-solid fa-floppy-disk";
+
+    } else if (target.className === "btn save fa-solid fa-floppy-disk") {
+        const parentElement = target.parentElement.parentElement.parentElement;
+
+        // Accessing input fields from parentElement
+        const nameInput = parentElement.querySelector('.student-name');
+        const classInput = parentElement.querySelector('.student-class');
+        const rollNoInput = parentElement.querySelector('.student-rollno');
+        const emailIdInput = parentElement.querySelector('.student-emailid');
+        const contactNoInput = parentElement.querySelector('.student-contactno');
+
+        if (validateStudentData(nameInput.value, classInput.value, rollNoInput.value, emailIdInput.value, contactNoInput.value)) {
+            // Changing properties of input fields
+            nameInput.setAttribute('readonly', true);
+            classInput.setAttribute('readonly', true);
+            rollNoInput.setAttribute('readonly', true);
+            emailIdInput.setAttribute('readonly', true);
+            contactNoInput.setAttribute('readonly', true);
+
+            target.className = "btn edit fa-solid fa-pen-to-square";
+
+            popupMessage("Student Data updated!", "#00af00");
+        } else {
+            return false;
+        }
+    }
+
+    if (target.classList.contains("remove")) {
+        const parentElement = target.parentElement.parentElement.parentElement;
+        parentElement.remove();
+        popupMessage("Student data deleted!", "#00af00");
+    }
+}
+
 submitBtn.addEventListener("click", addStudentToList);
+studentDataList.addEventListener("click", manipulateStudentDataRow);
