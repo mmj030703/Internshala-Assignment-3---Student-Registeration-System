@@ -6,11 +6,23 @@ const studentEmailId = document.querySelector("#student-email");
 const studentContactNo = document.querySelector("#contact-no");
 const submitBtn = document.querySelector(".submit-btn");
 const studentDataList = document.querySelector(".student-data-list");
+const noStudentsAvailableElement = document.querySelector('.student-data-table-container .no-student-data');
+const studentTable = document.querySelector('.student-table');
 
 // Global Variables
-let studentIdCounter = 0;
+let studentIdCounter = (+localStorage.getItem('studentIdCounter') + 1) || 0;
+const students = JSON.parse(localStorage.getItem("students")) || [];
 
 
+
+// function to add or remove vertical scrollbar to students data list
+function addOrRemoveVerticalScrollbar() {
+    if (studentTable.scrollHeight > studentTable.clientHeight) {
+        studentTable.style.overflowY = "scroll";
+    } else {
+        studentTable.style.overflowY = "hidden";
+    }
+}
 
 // function to create a popup element
 function createPopupElement(message) {
@@ -109,7 +121,7 @@ function validateStudentData(name, classValue, rollno, emailId, contactNo) {
 
 
 // function to create the row element for student data
-function createStudentDataRow(name, classValue, rollno, emailId, contactNo) {
+function createStudentDataRow(name, classValue, rollno, emailId, contactNo, studentId) {
     // Creating Elements
     const studentDataRow = document.createElement('tr');
     const studentIdCell = document.createElement('td');
@@ -123,7 +135,6 @@ function createStudentDataRow(name, classValue, rollno, emailId, contactNo) {
     const studentRollNoInput = document.createElement('input');
     const studentEmailIdInput = document.createElement('input');
     const studentContactNoInput = document.createElement('input');
-
     const studentButtonsCell = document.createElement('td');
     const editBtn = document.createElement("button");
     const removeBtn = document.createElement("button");
@@ -144,12 +155,12 @@ function createStudentDataRow(name, classValue, rollno, emailId, contactNo) {
     studentContactNoInput.classList.add("student-contactno");
 
     // Adding data to the Elements
-    studentNameInput.value = name;
-    studentIdCell.textContent = studentIdCounter++;
-    studentClassInput.value = classValue;
-    studentRollNoInput.value = rollno;
-    studentEmailIdInput.value = emailId;
-    studentContactNoInput.value = contactNo;
+    studentNameInput.value = name.trim().toLowerCase();
+    studentIdCell.textContent = (studentId === 0 ? '0' : studentId) || studentIdCounter;  
+    studentClassInput.value = classValue.trim().toLowerCase();
+    studentRollNoInput.value = rollno.trim().toLowerCase();
+    studentEmailIdInput.value = emailId.trim().toLowerCase();
+    studentContactNoInput.value = contactNo.trim().toLowerCase();
     editBtn.innerHTML = "<i title='Edit' class='btn edit fa-solid fa-pen-to-square'></i>";
     removeBtn.innerHTML = '<i title="Remove" class="btn remove fa-solid fa-trash"></i>';
 
@@ -187,6 +198,27 @@ function addStudentToList(e) {
     if (validateStudentData(name, classValue, rollno, emailId, contactNo)) {
         const studentDataRow = createStudentDataRow(name, classValue, rollno, emailId, contactNo);
         studentDataList.append(studentDataRow);
+
+        const studentObj = {
+            id: studentIdCounter,
+            name: name,
+            class: classValue,
+            rollNo: rollno,
+            emailId: emailId,
+            contactNo: contactNo
+        }
+
+        localStorage.setItem('studentIdCounter', `${studentIdCounter++}`);
+
+        students.push(studentObj);
+        localStorage.setItem('students', JSON.stringify(students));
+
+        if (students.length !== 0) {
+            noStudentsAvailableElement.style.display = "none";
+        }
+
+        addOrRemoveVerticalScrollbar();
+
         popupMessage("Student added successfully!", "#00af00");
         emptyStudentInputValues();
     } else {
@@ -208,6 +240,7 @@ function manipulateStudentDataRow(e) {
         const emailIdInput = parentElement.querySelector('.student-emailid');
         const contactNoInput = parentElement.querySelector('.student-contactno');
 
+        // As soon as edit button is clicked focus should go to that row's name input
         nameInput.focus();
 
         // Changing properties of input fields
@@ -228,6 +261,7 @@ function manipulateStudentDataRow(e) {
         const rollNoInput = parentElement.querySelector('.student-rollno');
         const emailIdInput = parentElement.querySelector('.student-emailid');
         const contactNoInput = parentElement.querySelector('.student-contactno');
+        const studentIdCell = parentElement.querySelector('.student-id');
 
         if (validateStudentData(nameInput.value, classInput.value, rollNoInput.value, emailIdInput.value, contactNoInput.value)) {
             // Changing properties of input fields
@@ -236,8 +270,21 @@ function manipulateStudentDataRow(e) {
             rollNoInput.setAttribute('readonly', true);
             emailIdInput.setAttribute('readonly', true);
             contactNoInput.setAttribute('readonly', true);
+            const studentId = studentIdCell.textContent;
 
             target.className = "btn edit fa-solid fa-pen-to-square";
+
+            students.forEach(student => {
+                if (student.id == studentId) {
+                    student.name = nameInput.value;
+                    student.class = classInput.value;
+                    student.rollNo = rollNoInput.value;
+                    student.emailId = emailIdInput.value;
+                    student.contactNo = contactNoInput.value;
+                }
+            });
+
+            localStorage.setItem('students', JSON.stringify(students));
 
             popupMessage("Student Data updated!", "#00af00");
         } else {
@@ -247,10 +294,41 @@ function manipulateStudentDataRow(e) {
 
     if (target.classList.contains("remove")) {
         const parentElement = target.parentElement.parentElement.parentElement;
+        const studentIdCell = parentElement.querySelector('.student-id');
+        let targetIndex = null;
+
         parentElement.remove();
+
+        students.forEach((student, index) => { 
+            if (student.id == studentIdCell.textContent) {
+                targetIndex = index;
+            }
+        });
+
+        students.splice(targetIndex, 1);
+
+        localStorage.setItem('students', JSON.stringify(students));
+
         popupMessage("Student data deleted!", "#00af00");
+
+        if (students.length === 0) noStudentsAvailableElement.style.display = "block";
+        addOrRemoveVerticalScrollbar();
     }
 }
+
+
+// Code Execution starts here
+if (students.length !== 0) {
+    noStudentsAvailableElement.style.display = "none";
+    students.forEach(student => {
+        const studentDataRow = createStudentDataRow(student.name, student.class, student.rollNo, student.emailId, student.contactNo, student.id);
+        studentDataList.append(studentDataRow);
+    });
+} else {
+    noStudentsAvailableElement.style.display = "block";
+}
+
+addOrRemoveVerticalScrollbar();
 
 submitBtn.addEventListener("click", addStudentToList);
 studentDataList.addEventListener("click", manipulateStudentDataRow);

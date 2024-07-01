@@ -20,6 +20,16 @@
     <header class="container">
         <img src="./resources/student icon.png" alt="Website Logo" class="logo">
         <h1>Student Registeration System</h1>
+
+        <article class="description">
+            <h2>What you can do?</h2>
+            <ul>
+                <li>Add a student to the list.</li>
+                <li>Edit the existing student in the list.</li>
+                <li>Delete the existing student in the list.</li>
+                <li>Students data is persistent as it is stored in local storage.</li>
+            </ul>
+        </article>
     </header>
 
     <!-- Header Section -->
@@ -55,7 +65,7 @@
             </div>
 
             <article class="form-buttons">
-                <button class="btn submit-btn">Submit</button>
+                <button class="btn submit-btn">Add Student</button>
                 <input type="reset" class="btn reset-btn" value="Reset">
             </article>
         </form>
@@ -64,6 +74,7 @@
         <section class="student-data-table-container">
             <h2 class="student-data-table-container-heading">Student Data</h2>
             <section class="student-table">
+                <p class="no-student-data">No Students Data Available!</p>
                 <table class="student-data-table">
                     <thead>
                         <tr class="heading-row">
@@ -78,6 +89,7 @@
                     </thead>
                     <!-- Students Data List -->
                     <tbody class="student-data-list">
+                        <!-- Sample Student Row Element -->
                         <!-- <tr class="student-data-row">
                             <td class="table-cell">001</td>
                             <td class="table-cell">Mayank M Jain</td>
