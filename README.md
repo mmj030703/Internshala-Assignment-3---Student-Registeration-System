@@ -9,5 +9,4 @@
 - Edit existing student.
 - Delete existing student.
 - LocalStorage added to make student data persistent
-- Responsive
 - Good & Clean UI
